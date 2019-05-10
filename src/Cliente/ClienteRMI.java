@@ -5,9 +5,12 @@
  */
 package Cliente;
 
-import Classes.Conta;
+import Servidor.Conta;
 import Servico.Servico;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import java.rmi.NotBoundException;
+//import com.mysql.jdbc.Connection;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -17,8 +20,9 @@ import java.util.Scanner;
 public class ClienteRMI {
     public static void main(String args[]) throws RemoteException{
         //int choice = 0;
+        String json = "";
         Registry reg = null;
-        System.setProperty("java.rmi.server.hostname","172.16.200.102");
+        System.setProperty("java.rmi.server.hostname","127.0.0.1");
 
 
         System.out.println("Qual banco você deseja acessar?\n"
@@ -30,24 +34,35 @@ public class ClienteRMI {
        
        switch(choice){
            case 1:
-               reg = LocateRegistry.getRegistry("localhost",9876);
+               reg = LocateRegistry.getRegistry("127.0.0.1",9876);
                break;
            case 2:
-               reg = LocateRegistry.getRegistry("172.16.200.74",9876);
+               reg = LocateRegistry.getRegistry("127.0.0.1",9876);
                break;
            default:
                break;
        }
        
         try{
-            Servico a = (Servico) reg.lookup("server");
-            String json = a.ConsultarConta();
+            Servico a = (Servico) reg.lookup("Server");
+            
+//            json = a.RegistrarConta(3123, 123131, "Yuri Lucas Luz da Silva", "47938751812");    
+//            json = a.ConsultarCadastroPorCpf("47938751812");
+            json = a.AlterarCadastro(3123, 123131, "Yuri L L da Silva", "47938751812");    
+//            a.RealizarDepósito(3123, 123131, 100);   
+//            a.RealizarSaque(3123, 123131, 50);
+
+            json = a.ConsultarCadastroPorCpf("47938751812");
+
+            
+            
+//            Transform json to object =========================================
             Gson gson = new Gson();
             Conta Conta = gson.fromJson(json, Conta.class);
-//            System.out.println(a.soma(10, 12));
-            System.out.println(Conta.getNum_conta() + " " + Conta.getNome());
-        }catch (Exception e)
-        {
+//            Transform json to object =========================================
+            System.out.println(Conta.getNum_conta() + " " + Conta.getNome() + " " + Conta.getSaldo());
+            
+        }catch (JsonSyntaxException | NotBoundException | RemoteException e){
             e.printStackTrace();
         }
     }

@@ -5,22 +5,32 @@
  */
 package Servidor;
 
+import Servico.Connector;
 import Servico.ServicoImp;
+import com.mysql.jdbc.Connection;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class ServidorRMI {
 
-    public static void main(String args[]) {
+    public static void main(String args[]){
+        Connector db = new Connector();
+        Connection conn = (Connection) db.connect();
+
         try {
-            ServicoImp a = new ServicoImp();
+            ServicoImp a = new ServicoImp(db, conn);
             Registry reg = LocateRegistry.createRegistry(9876);
-            reg.rebind("server", a);
-            System.out.println("Servidor Iniciado");
+            reg.rebind("Server", a);
+            System.out.println("Servidor do banco iniciado!");
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+    
+
 }
