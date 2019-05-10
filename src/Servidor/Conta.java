@@ -1,19 +1,29 @@
-package Classes;
+package Servidor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
-@Entity
 public class Conta {
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
-    
     private int ag;
     private int num_conta;
+    private String cpf;
     private String nome;
+    private double saldo;
+
+    public Conta(int ag, int num_conta, String nome, String cpf) {
+        this.ag = ag;
+        this.num_conta = num_conta;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.saldo = 0;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
 
     public int getId() {
         return id;
@@ -22,7 +32,7 @@ public class Conta {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public int getAg() {
         return ag;
     }
@@ -46,4 +56,14 @@ public class Conta {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+    
+    
 }
