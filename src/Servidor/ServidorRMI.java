@@ -10,6 +10,8 @@ import Servico.ServicoImp;
 import com.mysql.jdbc.Connection;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class ServidorRMI {
